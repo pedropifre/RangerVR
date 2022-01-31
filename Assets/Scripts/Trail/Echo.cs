@@ -16,8 +16,8 @@ public class Echo : MonoBehaviour
     List<SkinnedMeshRenderer> BakeCloneMeshList;
     List<GameObject> objGameObjectList;
 
-    const int CloneCount = 50; // Number of afterimages 
-    const int FlameCountMax = 4; // Frequency to update afterimages 
+    const int CloneCount = 30; // Number of afterimages 
+    const int FlameCountMax = 8; // Frequency to update afterimages 
     int FlameCount = 1;
 
     //coordenadas
@@ -85,28 +85,8 @@ public class Echo : MonoBehaviour
             // Copy position and rotation
             BakeCloneMeshList[i].transform.position = BakeCloneMeshList[i - 1].transform.position;
             BakeCloneMeshList[i].transform.rotation = BakeCloneMeshList[i - 1].transform.rotation;
-
-            //coordenadaXSource = coordenadasScript.CoordenadaX();
-            //coordenadaYSource = coordenadasScript.CoordenadaY();
-
-            //float xi = coordenadaXSource;
-            //float yi = coordenadaYSource;
-            //if(xi > 0 && yi > 0)
-            //{
-            //    objGameObjectList[i].GetComponent<Renderer>().material.color = Color.green;
-            //}
-            //else if(xi < 0 && yi < 0)
-            //{
-            //    objGameObjectList[i].GetComponent<Renderer>().material.color = Color.blue;
-            //}
-            //else if (xi > 0 && yi < 0)
-            //{
-            //    objGameObjectList[i].GetComponent<Renderer>().material.color = Color.red;
-            //}
-            //else if (xi < 0 && yi > 0)
-            //{
-            //    objGameObjectList[i].GetComponent<Renderer>().material.color = Color.yellow;
-            //}
+            objGameObjectList[i].GetComponent<Renderer>().material.color = Color.red;
+            
         }
 
         // Bake the current skin mesh 
@@ -121,6 +101,8 @@ public class Echo : MonoBehaviour
    
     }
 
+    private float contagem = 0;
+    public TextMesh hitT;
     private void Update()
     {
         Vector2 posicaoPiaoAtual = posicaoPiao.TranformCoordinate();
@@ -130,64 +112,42 @@ public class Echo : MonoBehaviour
 
         x.text = "x = " + posicaoPiaoAtual.x;
         y.text = "y = " + posicaoPiaoAtual.y;
+        hitT.text = "Hit Nº "+contagem;
         
 
         for (int v = objGameObjectList.Count - 1; v >= 1; v--)
         {
             Vector2 posicaoCaixa = objGameObjectList[v].transform.localPosition;
+            Color corObj =  objGameObjectList[v].GetComponent<Renderer>().material.color;
             if (piaox < 0.5 && piaoy > 0.5)
             {
-                if(posicaoCaixa.x <=0 && posicaoCaixa.y >= 0)
+                if (posicaoCaixa.x <= 0 && posicaoCaixa.y <= 0)
+                {
+                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.yellow;
+                }
+                else if (posicaoCaixa.x <= 0 && posicaoCaixa.y >= 0 )
                 {
                     objGameObjectList[v].GetComponent<Renderer>().material.color = Color.red;
-                }
-                else if (posicaoCaixa.x > 0 && posicaoCaixa.y < 0)
-                {
-                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.green;
-                }
-                else if (posicaoCaixa.x >= 0 && posicaoCaixa.y >= 0)
-                {
-                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.green;
-                }
-                else if (posicaoCaixa.x <= 0 && posicaoCaixa.y <= 0)
-                {
-                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.green;
                 }
             }
             else if (piaox > 0.5 && piaoy < 0.5)
             {
                 if (posicaoCaixa.x >= 0 && posicaoCaixa.y >= 0)
                 {
-                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.green;
+                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.yellow;
                 }
-                else if (posicaoCaixa.x >= 0 && posicaoCaixa.y <= 0)
+                else if (posicaoCaixa.x >= 0 && posicaoCaixa.y >= 0)
                 {
                     objGameObjectList[v].GetComponent<Renderer>().material.color = Color.red;
-                }
-                else if (posicaoCaixa.x <= 0 && posicaoCaixa.y >= 0)
-                {
-                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.green;
-                }
-                else if (posicaoCaixa.x <= 0 && posicaoCaixa.y <= 0)
-                {
-                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.green;
                 }
             }
             else if (piaox < 0.5 && piaoy < 0.5)
             {
-                if (posicaoCaixa.x >= 0 && posicaoCaixa.y >= 0)
+               if (posicaoCaixa.x >= 0 && posicaoCaixa.y <= 0)
                 {
-                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.green;
+                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.yellow;
                 }
-                else if (posicaoCaixa.x > 0 && posicaoCaixa.y < 0)
-                {
-                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.green;
-                }
-                else if (posicaoCaixa.x <= 0 && posicaoCaixa.y >= 0)
-                {
-                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.green;
-                }
-                else if (posicaoCaixa.x <= 0 && posicaoCaixa.y <= 0)
+                else if (posicaoCaixa.x <= 0 && posicaoCaixa.y <= 0 )
                 {
                     objGameObjectList[v].GetComponent<Renderer>().material.color = Color.red;
                 }
@@ -196,22 +156,26 @@ public class Echo : MonoBehaviour
             {
                 if (posicaoCaixa.x <= 0 && posicaoCaixa.y >= 0)
                 {
-                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.green;
+                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.yellow;
                 }
-                else if (posicaoCaixa.x < 0 && posicaoCaixa.y < 0)
-                {
-                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.green;
-                }
-                else if (posicaoCaixa.x >= 0 && posicaoCaixa.y >= 0)
+                else if (posicaoCaixa.x >= 0 && posicaoCaixa.y >= 0 )
                 {
                     objGameObjectList[v].GetComponent<Renderer>().material.color = Color.red;
-                }
-                else if (posicaoCaixa.x >= 0 && posicaoCaixa.y <= 0)
-                {
-                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.green;
                 }
             }
         }
 
     }
+
+    
+    void OnTriggerEnter(Collider other) {  
+        Color corObj =  other.GetComponent<Renderer>().material.color;
+        if(other.gameObject.tag == "ray_hit" && corObj == Color.yellow)
+        {
+            Debug.Log("Acertou um bloco");
+            contagem++;
+        }
+    }
+      
+
 }
