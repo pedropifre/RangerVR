@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Echo : MonoBehaviour
 {
@@ -27,20 +28,26 @@ public class Echo : MonoBehaviour
     public float coordenadaYSource;
     public TextMesh x;
     public TextMesh y;
+    public GameObject posicaoMestre;
+
+    private float contagem = 0;
+    public TextMesh hitT;
 
     void Start()
     {
         BakeCloneMeshList = new List<SkinnedMeshRenderer>();
         objGameObjectList = new List<GameObject>();
 
+
         // Duplicate afterimage
         for (int i = 0; i < CloneCount; i++)
         {
             var obj = Instantiate(BakeMeshObj);
             obj.transform.SetParent(objpai.transform);
+            obj.name = "Objeto "+i;
             BakeCloneMeshList.Add(obj.GetComponent<SkinnedMeshRenderer>());
             objGameObjectList.Add(obj);
-            obj.GetComponent<Renderer>().material.color = Color.blue;
+            obj.GetComponent<Renderer>().material.color = Color.red;
         }
     }
 
@@ -85,8 +92,102 @@ public class Echo : MonoBehaviour
             // Copy position and rotation
             BakeCloneMeshList[i].transform.position = BakeCloneMeshList[i - 1].transform.position;
             BakeCloneMeshList[i].transform.rotation = BakeCloneMeshList[i - 1].transform.rotation;
-            objGameObjectList[i].GetComponent<Renderer>().material.color = Color.red;
+            BakeCloneMeshList[i].material.color = BakeCloneMeshList[i - 1].material.color;
             
+            
+            if (Math.Round(posicaoMestre.transform.localPosition.x,2) == 
+                Math.Round(objGameObjectList[i].transform.localPosition.x,2) &&
+                Math.Round(posicaoMestre.transform.localPosition.y, 2)
+                == Math.Round(objGameObjectList[i].transform.localPosition.y, 2))
+            {
+                BakeCloneMeshList[i].material.color = Color.red;
+            }
+
+
+
+
+
+            Vector2 posicaoPiaoAtual = posicaoPiao.TranformCoordinate();
+
+            float piaox = posicaoPiaoAtual.x;
+            float piaoy = posicaoPiaoAtual.y;
+
+
+            hitT.text = "Hit Nº " + contagem;
+            
+
+            x.text = objGameObjectList[2].name;
+            y.text = "";
+            Vector2 posicaoCaixa = objGameObjectList[i].transform.localPosition;
+            Color corObj = objGameObjectList[i].GetComponent<Renderer>().material.color;
+            if (piaox < 0.5 && piaoy > 0.5)
+            {
+                if (posicaoCaixa.x <= 0 && posicaoCaixa.y <= 0)
+                {
+                    BakeCloneMeshList[i].material.color = Color.yellow;
+                }
+                if (posicaoCaixa.x <= 0 && posicaoCaixa.y >= 0)
+                {
+                    if (BakeCloneMeshList[i].material.color == Color.red)
+                    {
+                        BakeCloneMeshList[i].material.color = Color.red;
+                    }
+                }
+            }
+            else if (piaox > 0.5 && piaoy < 0.5)
+            {
+                if (posicaoCaixa.x >= 0 && posicaoCaixa.y >= 0)
+                {
+                    BakeCloneMeshList[i].material.color = Color.yellow;
+                }
+                if (posicaoCaixa.x >= 0 && posicaoCaixa.y >= 0)
+                {
+                    if (BakeCloneMeshList[i].material.color == Color.red)
+                    {
+                        BakeCloneMeshList[i].material.color = Color.red;
+                    }
+                }
+            }
+            else if (piaox < 0.5 && piaoy < 0.5)
+            {
+                if (posicaoCaixa.x >= 0 && posicaoCaixa.y <= 0)
+                {
+                    BakeCloneMeshList[i].material.color = Color.yellow;
+                }
+                if (posicaoCaixa.x <= 0 && posicaoCaixa.y <= 0)
+                {
+                    if (BakeCloneMeshList[i].material.color == Color.red)
+                    {
+                        BakeCloneMeshList[i].material.color = Color.red;
+                    }
+                }
+            }
+            else if (piaox > 0.5 && piaoy > 0.5)
+            {
+                if (posicaoCaixa.x <= 0 && posicaoCaixa.y >= 0)
+                {
+                    BakeCloneMeshList[i].material.color = Color.yellow;
+                }
+                if (posicaoCaixa.x >= 0 && posicaoCaixa.y >= 0)
+                {
+                    if (BakeCloneMeshList[i].material.color == Color.red)
+                    {
+                        BakeCloneMeshList[i].material.color = Color.red;
+                    }
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
         }
 
         // Bake the current skin mesh 
@@ -98,73 +199,8 @@ public class Echo : MonoBehaviour
         // Copy position and rotation 
         BakeCloneMeshList[0].transform.position = transform.position;
         BakeCloneMeshList[0].transform.rotation = transform.rotation;
+        BakeCloneMeshList[0].material.color = Color.red;
    
-    }
-
-    private float contagem = 0;
-    public TextMesh hitT;
-    private void Update()
-    {
-        Vector2 posicaoPiaoAtual = posicaoPiao.TranformCoordinate();
-
-        float piaox = posicaoPiaoAtual.x;
-        float piaoy = posicaoPiaoAtual.y;
-
-        x.text = "x = " + posicaoPiaoAtual.x;
-        y.text = "y = " + posicaoPiaoAtual.y;
-        hitT.text = "Hit Nº "+contagem;
-        
-
-        for (int v = objGameObjectList.Count - 1; v >= 1; v--)
-        {
-            Vector2 posicaoCaixa = objGameObjectList[v].transform.localPosition;
-            Color corObj =  objGameObjectList[v].GetComponent<Renderer>().material.color;
-            if (piaox < 0.5 && piaoy > 0.5)
-            {
-                if (posicaoCaixa.x <= 0 && posicaoCaixa.y <= 0)
-                {
-                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.yellow;
-                }
-                else if (posicaoCaixa.x <= 0 && posicaoCaixa.y >= 0 )
-                {
-                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.red;
-                }
-            }
-            else if (piaox > 0.5 && piaoy < 0.5)
-            {
-                if (posicaoCaixa.x >= 0 && posicaoCaixa.y >= 0)
-                {
-                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.yellow;
-                }
-                else if (posicaoCaixa.x >= 0 && posicaoCaixa.y >= 0)
-                {
-                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.red;
-                }
-            }
-            else if (piaox < 0.5 && piaoy < 0.5)
-            {
-               if (posicaoCaixa.x >= 0 && posicaoCaixa.y <= 0)
-                {
-                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.yellow;
-                }
-                else if (posicaoCaixa.x <= 0 && posicaoCaixa.y <= 0 )
-                {
-                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.red;
-                }
-            }
-            else if (piaox > 0.5 && piaoy > 0.5)
-            {
-                if (posicaoCaixa.x <= 0 && posicaoCaixa.y >= 0)
-                {
-                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.yellow;
-                }
-                else if (posicaoCaixa.x >= 0 && posicaoCaixa.y >= 0 )
-                {
-                    objGameObjectList[v].GetComponent<Renderer>().material.color = Color.red;
-                }
-            }
-        }
-
     }
 
     

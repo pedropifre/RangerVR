@@ -537,6 +537,7 @@ MonoBehaviour:
   coordenadaYSource: 0
   x: {fileID: 1368168680}
   y: {fileID: 1585582535}
+  posicaoMestre: {fileID: 6517782130678345674}
   hitT: {fileID: 684140286}
 --- !u!1 &653260035
 GameObject:
@@ -3870,6 +3871,7 @@ GameObject:
   - component: {fileID: 2950142444144469308}
   - component: {fileID: 2950142444144469310}
   - component: {fileID: 2950142444144469309}
+  - component: {fileID: 2950142444144469311}
   m_Layer: 0
   m_Name: gyro
   m_TagString: Untagged
@@ -3925,6 +3927,58 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.3196008, y: 1.3379406, z: 2.0630944}
   m_Center: {x: 0.030376699, y: 2.2169077, z: 0.05413509}
+--- !u!137 &2950142444144469311
+SkinnedMeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950142444144469307}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 3
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  serializedVersion: 2
+  m_Quality: 0
+  m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
+  m_Mesh: {fileID: 0}
+  m_Bones: []
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: 0}
+  m_AABB:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_DirtyAABB: 0
 --- !u!137 &3103985025048020995
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -4373,7 +4427,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1897886074315546551, guid: a48c19cc63bd2bc4cbf417acc72997fa, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1897886074315546553, guid: a48c19cc63bd2bc4cbf417acc72997fa, type: 3}
       propertyPath: m_Layer
